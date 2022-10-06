@@ -1,9 +1,7 @@
 package com.hb.security;
 
-import com.hb.security.controller.HelloController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class SecurityApplication {

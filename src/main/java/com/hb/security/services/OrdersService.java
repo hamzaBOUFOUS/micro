@@ -4,6 +4,8 @@ import com.hb.security.entity.Orders;
 import com.hb.security.repository.OrdersRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrdersService {
     private OrdersRepository ordersRepository;
@@ -13,7 +15,10 @@ public class OrdersService {
     }
 
     public Orders saveOrder(Orders orders){
-        System.out.println(orders);
         return this.ordersRepository.save(orders);
+    }
+
+    public List<Orders> allOrder(){
+        return this.ordersRepository.findAll();
     }
 }

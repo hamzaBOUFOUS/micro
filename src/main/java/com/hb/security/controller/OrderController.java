@@ -5,10 +5,10 @@ import com.hb.security.dto.mapper.OrderMapper;
 import com.hb.security.entity.Orders;
 import com.hb.security.services.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -24,7 +24,12 @@ public class OrderController {
 
     @PostMapping("/add")
     public Orders saveOrder(@RequestBody Orders orders){
-        System.out.println(orders);
         return this.ordersService.saveOrder(orders);
+    }
+
+
+    @GetMapping("/all")
+    public List<Orders> allOrder(){
+        return this.ordersService.allOrder();
     }
 }

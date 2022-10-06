@@ -1,5 +1,6 @@
 package com.hb.security.services;
 
+import com.hb.security.entity.Orders;
 import com.hb.security.entity.Produit;
 import com.hb.security.repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public class ProduitService {
     @Autowired
     public ProduitService(ProduitRepository produitRepository){
         this.produitRepository = produitRepository;
+    }
+
+    public List<Produit> listAllProduit(){
+        return this.produitRepository.findAll();
     }
 
 }

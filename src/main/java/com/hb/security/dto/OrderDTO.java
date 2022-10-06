@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDTO {
     private int quantity;
-    private List<Produit> orderIte;
+    private List<Produit> produitList;
 }
