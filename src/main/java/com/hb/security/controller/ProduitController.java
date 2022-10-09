@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,9 @@ public class ProduitController {
 
     @GetMapping("/all")
     public List<Produit> testHello(){
+        DateTimeFormatter monthFormatter
+                = DateTimeFormatter.ofPattern("MM-dd");
+        System.out.println(LocalDate.now().format(monthFormatter));
         return this.produitService.listAllProduit();
     }
 }

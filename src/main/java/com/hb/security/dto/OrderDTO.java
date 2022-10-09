@@ -1,9 +1,11 @@
 package com.hb.security.dto;
 
+import com.hb.security.entity.OrderItem;
 import com.hb.security.entity.Produit;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -11,6 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
-    private int quantity;
-    private List<Produit> produitList;
+    private List<OrderItem> items;
 }
