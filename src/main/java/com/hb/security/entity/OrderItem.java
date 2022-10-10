@@ -1,5 +1,7 @@
 package com.hb.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,20 +10,24 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 @Table
 public class OrderItem {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+
     @Column(name="quantity")
     private int quantity;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="id_order", updatable = false)
-    private Orders order;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Orders orders;
+
+    //@JsonIgnore
     @OneToOne
     @JoinColumn(name="id_produit")
     private Produit produit;

@@ -1,9 +1,9 @@
 package com.hb.security.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import javax.persistence.Column;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -11,5 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProduitDTO {
     private String name;
-    private double price;
+    private float unitPrice;
+    private int unitsInStock;
+    private String reference;
 }

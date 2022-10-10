@@ -1,5 +1,6 @@
 package com.hb.security.services;
 
+import com.hb.security.entity.OrderItem;
 import com.hb.security.entity.Orders;
 import com.hb.security.repository.OrdersRepository;
 import com.hb.security.utils.Statu;
@@ -14,11 +15,13 @@ import java.util.Optional;
 @Service
 public class OrdersService {
     private OrdersRepository ordersRepository;
+    private OrderItemService orderItemService;
     private StringSequenceIdentifier stringSequenceIdentifier;
 
     @Autowired
-    public OrdersService(OrdersRepository ordersRepository){
+    public OrdersService(OrdersRepository ordersRepository, OrderItemService orderItemService){
         this.ordersRepository = ordersRepository;
+        this.orderItemService = orderItemService;
         this.stringSequenceIdentifier = new StringSequenceIdentifier(this);
     }
 
@@ -26,10 +29,13 @@ public class OrdersService {
         orders.setDateCreatedOrder(LocalDateTime.now(ZoneId.of("Africa/Casablanca")));
         orders.setActive(true);
         orders.setStatu(Statu.PROCESSING);
-        orders.setValidation(false);
         orders.setReference(this.stringSequenceIdentifier.stringSequenceIdentifier());
-        System.out.println(orders);
-        return this.ordersRepository.save(orders);
+        Orders res = this.ordersRepository.save(orders);
+        for(OrderItem orderItem:res.getItems()){
+            orderItem.setOrders(res);
+            this.orderItemService.saveOrderItem(orderItem);
+        }
+        return res;
     }
 
     public List<Orders> allOrder(){

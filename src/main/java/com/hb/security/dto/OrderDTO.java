@@ -13,5 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
+    private long id;
     private List<OrderItem> items;
 }
