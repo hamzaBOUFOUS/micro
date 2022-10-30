@@ -20,7 +20,6 @@ public class Produit {
     @Column(name = "name")
     private String name;
     @Column(name = "unit_price")
-    @NonNull
     private float unitPrice;
     @Column(name = "product_active")
     private boolean active=true;
