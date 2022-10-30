@@ -7,6 +7,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,9 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @Log4j2
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
+    @Autowired
     private final JwtConfig jwtConfig;
+    @Autowired
     private final JwtUtil jwtUtil;
 
     @Override

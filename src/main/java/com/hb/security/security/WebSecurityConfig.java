@@ -6,6 +6,7 @@ import com.hb.security.security.jwt.JwtConfig;
 import com.hb.security.security.jwt.JwtUtil;
 import com.hb.security.security.services.ApplicationUserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,9 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    @Autowired
     private final JwtUtil jwtUtil;
+    @Autowired
     private final JwtConfig jwtConfig;
+    @Autowired
     private ApplicationUserService userDetailsService;
 
     @Override
@@ -37,17 +40,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/order/add").hasAuthority("ADMIN");
-        http.authorizeRequests().antMatchers("/api/order/add").hasAuthority("USER");
         http.authorizeRequests().antMatchers().authenticated();
+        http.authorizeRequests().antMatchers("/api/order/add").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/api/order/add").hasAuthority("ADMIN");
+        http.authorizeRequests().antMatchers("/login").permitAll();
 
-        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil, userDetailsService));
+        http.addFilter(new JWTAuthenticationFilter(authenticationManagerBean(), jwtUtil, userDetailsService));
         http.addFilterBefore(new JWTAuthorizationFilter(jwtConfig, jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 }

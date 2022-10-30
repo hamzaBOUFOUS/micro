@@ -14,12 +14,15 @@ import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
@@ -27,10 +30,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@EnableConfigurationProperties(JwtConfig.class)
 @Log4j2
 public class JwtUtil {
-    private final JwtConfig jwtConfig;
 
+    private final JwtConfig jwtConfig;
+    @Autowired
     public JwtUtil(JwtConfig jwtConfig) {
         this.jwtConfig = jwtConfig;
     }
@@ -58,7 +63,6 @@ public class JwtUtil {
             log.info("Start to generate token");
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(details.getUsername())
-                    //.issuer(issuer)
                     .claim("roles", details.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                     .expirationTime(Date.from(Instant.now().plusSeconds(jwtConfig.getTokenExpirationAfterHours() * 3_600L)))
                     .issueTime(new Date())
@@ -69,10 +73,12 @@ public class JwtUtil {
             JWSObject jwsObject = new JWSObject(new JWSHeader(JWSAlgorithm.HS256),
                     payload);
 
-            jwsObject.sign(new MACSigner(jwtConfig.getSecretKey()));
+            jwsObject.sign(new MACSigner(jwtConfig.getSecretKey().getBytes(StandardCharsets.UTF_8)));
             log.info("sign token by signer");
+
             return jwsObject.serialize();
         } catch (JOSEException e) {
+
             log.error(String.format("Error to create JWT %s", e.getMessage()));
             throw new RuntimeException(String.format("Error to create JWT %s", e.getMessage()));
         }

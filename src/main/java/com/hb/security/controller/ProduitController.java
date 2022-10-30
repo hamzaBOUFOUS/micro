@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/produit")
+@RequestMapping("/api/produit/all")
 public class ProduitController {
 
     private ProduitService produitService;
@@ -23,7 +23,7 @@ public class ProduitController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/all")
     public List<Produit> testHello(){
         DateTimeFormatter monthFormatter

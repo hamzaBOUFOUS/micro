@@ -6,6 +6,7 @@ import com.hb.security.security.jwt.JwtUtil;
 import com.hb.security.security.services.ApplicationUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +24,11 @@ import java.io.IOException;
 @Slf4j
 @AllArgsConstructor
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+    @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
     private final JwtUtil jwtUtil;
+    @Autowired
     private final ApplicationUserService applicationUserService;
 
     @Override
@@ -34,9 +37,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         try {
             login = new ObjectMapper().readValue(request.getInputStream(),Login.class);
+
             log.debug("Login with email: {}", login.getEmail());
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         } catch (AuthenticationException e) {
+
             log.error(String.format("Authentication failed for email: %s and password: %s", login.getEmail(), login.getPassword()));
             throw  e;
         } catch (Exception e){
